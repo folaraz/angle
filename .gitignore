@@ -2,10 +2,12 @@
 __pycache__/
 *.py[cod]
 *$py.class
+/venv
 
 # C extensions
 *.so
-
+.gradle/
+.idea/
 # Distribution / packaging
 .Python
 build/
@@ -127,3 +129,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea/
