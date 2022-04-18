@@ -78,15 +78,15 @@ jobs:
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      - name: Download task definition
-        run: aws ecs describe-task-definition --task-definition aws-ecs-angel-task --query taskDefinition > task-definition.json
+#      - name: Download task definition
+#        run: aws ecs describe-task-definition --task-definition aws-ecs-angel-task --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: update-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
-          container-name: aws-ecs-angel-container
+          task-definition: aws-task-definition.json
+          container-name: angel
           image: ${{ steps.push-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
@@ -96,3 +96,4 @@ jobs:
           task-definition: ${{ steps.update-task-def.outputs.task-definition }}
           service: aws-ecs-angel-service
           cluster: aws-ecs-angel-api
+          wait-for-service-stability: true
